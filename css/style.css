@@ -136,20 +136,102 @@ input[type="checkbox"] {
 }
 
 #aux-row {
-    max-height: 0;
-    overflow: hidden;
+    display: grid;
+    grid-template-rows: 0fr;
     border: 1px solid transparent;
     border-radius: 4px;
     transition:
-        max-height 200ms ease,
-        border-color 200ms ease,
-        margin 200ms ease;
+        grid-template-rows 200ms ease,
+        border-color 200ms ease;
 }
 
 #aux-row.visible {
-    max-height: 100px;
+    grid-template-rows: 1fr;
     border-color: var(--border);
+}
+
+#aux-row-inner {
+    overflow: hidden;
+    min-height: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 6px 16px;
     padding: 8px 10px;
+}
+
+.aux-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 25px;
+}
+
+.aux-group-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    min-width: 12px;
+}
+
+.aux-chips {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.aux-chip {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 12px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    min-width: 1.4em;
+    text-align: center;
+}
+
+.aux-chip.active {
+    border-color: var(--bar-active);
+    color: var(--bar-active);
+}
+
+.aux-chip.done {
+    opacity: 0.45;
+    text-decoration: line-through;
+}
+
+.aux-chip.empty {
+    color: var(--text-muted);
+    border-style: dashed;
+}
+
+.aux-chip.empty {
+    text-decoration: none;
+}
+
+.aux-histogram {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 48px;
+    width: 100%;
+}
+
+.aux-hist-bar {
+    flex: 1;
+    background: var(--bar-default);
+    min-height: 1px;
+    border-radius: 1px 1px 0 0;
+}
+
+.aux-hist-bar.active {
+    background: var(--bar-active);
+}
+
+.aux-hist-bar.done {
+    background: var(--bar-sorted);
+    opacity: 0.6;
 }
 
 #panels {

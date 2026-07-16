@@ -54,9 +54,11 @@ function* insertionSort(state, arr, lo, hi) {
         const key = arr[i];
         let j = i - 1;
 
-        while (j >= lo && arr[j] > key) {
+        while (j >= lo) {
             state.active = new Set([j, j + 1]);
             yield { type: "compare", indices: [j, j + 1] };
+
+            if (arr[j] <= key) break;
 
             arr[j + 1] = arr[j];
             yield { type: "write", indices: [j + 1] };

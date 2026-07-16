@@ -10,7 +10,7 @@ export class Engine {
     constructor() {
         this.state = new State();
 
-        this.algoName = "Introspective Sort";
+        this.algoName = "Bubble Sort";
         this.dataset = "Random";
         this.speed = 1.0;
         this.muted = false;
@@ -19,6 +19,7 @@ export class Engine {
         this.stats = emptyStats();
 
         this._generator = null;
+        this._lastStepTime = 0;
 
         this.shuffle();
     }
@@ -51,6 +52,7 @@ export class Engine {
             return false;
         }
         this.running = true;
+        this._lastStepTime = performance.now();
         return true;
     }
 
@@ -63,18 +65,23 @@ export class Engine {
         this._stop();
     }
 
-    tick(frameCount) {
+    tick(now) {
         if (!this.running) return false;
 
-        const framesPerStep = Math.max(1, Math.round(6 / this.speed));
-        if (frameCount % framesPerStep !== 0) return true;
+        const stepIntervalMs = 100 / this.speed;
 
         this._ensureGenerator();
-        const alive = this._advance();
 
-        if (!alive) this.running = false;
+        while (now - this._lastStepTime >= stepIntervalMs) {
+            this._lastStepTime += stepIntervalMs;
 
-        return alive;
+            if (!this._advance()) {
+                this.running = false;
+                return false;
+            }
+        }
+
+        return true;
     }
 
     _ensureGenerator() {

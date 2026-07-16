@@ -2,7 +2,42 @@ import { bogoSort } from "./algorithms/bogoSort.js";
 import { bogobogoSort } from "./algorithms/bogobogoSort.js";
 import { bozoSort } from "./algorithms/bozoSort.js";
 import { bubbleSort, optimisedBubbleSort } from "./algorithms/bubbleSort.js";
+import {
+    cocktailSort,
+    optimisedCocktailSort,
+} from "./algorithms/cocktailSort.js";
+import { combSort, combSort11 } from "./algorithms/combSort.js";
+import { countingSort, stableCountingSort } from "./algorithms/countingSort.js";
+import { cycleSort } from "./algorithms/cycleSort.js";
+import { gnomeSort } from "./algorithms/gnomeSort.js";
+import { heapSort } from "./algorithms/heapSort.js";
+import {
+    insertionSort,
+    binaryInsertionSort,
+} from "./algorithms/insertionSort.js";
+import { intelligentDesignSort } from "./algorithms/intelligentDesignSort.js";
 import { introspectiveSort } from "./algorithms/introspectiveSort.js";
+import { lsdRadixSort } from "./algorithms/lsdRadixSort.js";
+import { mergeSort, bottomUpMergeSort } from "./algorithms/mergeSort.js";
+import { miracleSort } from "./algorithms/miracleSort.js";
+import { msdRadixSort } from "./algorithms/msdRadixSort.js";
+import { pancakeSort } from "./algorithms/pancakeSort.js";
+import { quantumBogoSort } from "./algorithms/quantumBogoSort.js";
+import {
+    quickSort,
+    randomisedQuickSort,
+    medianOfThreeQuickSort,
+    threeWayQuickSort,
+    dualPivotQuickSort,
+} from "./algorithms/quickSort.js";
+import { selectionSort } from "./algorithms/selectionSort.js";
+import { shellSort } from "./algorithms/shellSort.js";
+import { slowSort } from "./algorithms/slowSort.js";
+import { stalinSort } from "./algorithms/stalinSort.js";
+import { stoogeSort } from "./algorithms/stoogeSort.js";
+import { thanosSort } from "./algorithms/thanosSort.js";
+import { timsort } from "./algorithms/timsort.js";
+import { tournamentSort } from "./algorithms/tournamentSort.js";
 
 function shuffleInPlace(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -184,7 +219,7 @@ const ALGOS = [
     },
     {
         name: "Insertion Sort",
-        fn: null,
+        fn: insertionSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n)",
@@ -196,7 +231,7 @@ const ALGOS = [
     },
     {
         name: "Binary Insertion Sort",
-        fn: null,
+        fn: binaryInsertionSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n log n)",
@@ -208,7 +243,7 @@ const ALGOS = [
     },
     {
         name: "Selection Sort",
-        fn: null,
+        fn: selectionSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n\u00b2)",
@@ -220,7 +255,7 @@ const ALGOS = [
     },
     {
         name: "Merge Sort",
-        fn: null,
+        fn: mergeSort,
         time_worst: "O(n log n)",
         time_avg: "O(n log n)",
         time_best: "O(n log n)",
@@ -232,7 +267,7 @@ const ALGOS = [
     },
     {
         name: "Bottom-up Merge Sort",
-        fn: null,
+        fn: bottomUpMergeSort,
         time_worst: "O(n log n)",
         time_avg: "O(n log n)",
         time_best: "O(n log n)",
@@ -244,7 +279,7 @@ const ALGOS = [
     },
     {
         name: "Miracle Sort",
-        fn: null,
+        fn: miracleSort,
         time_worst: "Unbounded",
         time_avg: "Unbounded",
         time_best: "O(n)",
@@ -256,7 +291,7 @@ const ALGOS = [
     },
     {
         name: "Stalin Sort",
-        fn: null,
+        fn: stalinSort,
         time_worst: "O(n)",
         time_avg: "O(n)",
         time_best: "O(n)",
@@ -268,7 +303,7 @@ const ALGOS = [
     },
     {
         name: "Thanos Sort",
-        fn: null,
+        fn: thanosSort,
         time_worst: "O(n log n)",
         time_avg: "O(n log n)",
         time_best: "O(n)",
@@ -280,7 +315,7 @@ const ALGOS = [
     },
     {
         name: "Quick Sort",
-        fn: null,
+        fn: quickSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n log n)",
         time_best: "O(n log n)",
@@ -292,7 +327,7 @@ const ALGOS = [
     },
     {
         name: "Randomised Quick Sort",
-        fn: null,
+        fn: randomisedQuickSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n log n)",
         time_best: "O(n log n)",
@@ -304,7 +339,7 @@ const ALGOS = [
     },
     {
         name: "Median-of-Three Quick Sort",
-        fn: null,
+        fn: medianOfThreeQuickSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n log n)",
         time_best: "O(n log n)",
@@ -316,7 +351,7 @@ const ALGOS = [
     },
     {
         name: "3-Way Quick Sort",
-        fn: null,
+        fn: threeWayQuickSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n log n)",
         time_best: "O(n)",
@@ -328,7 +363,7 @@ const ALGOS = [
     },
     {
         name: "Dual-Pivot Quick Sort",
-        fn: null,
+        fn: dualPivotQuickSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n log n)",
         time_best: "O(n log n)",
@@ -340,7 +375,7 @@ const ALGOS = [
     },
     {
         name: "Heap Sort",
-        fn: null,
+        fn: heapSort,
         time_worst: "O(n log n)",
         time_avg: "O(n log n)",
         time_best: "O(n log n)",
@@ -352,7 +387,7 @@ const ALGOS = [
     },
     {
         name: "Counting Sort",
-        fn: null,
+        fn: countingSort,
         time_worst: "O(n + k)",
         time_avg: "O(n + k)",
         time_best: "O(n + k)",
@@ -364,7 +399,7 @@ const ALGOS = [
     },
     {
         name: "Stable Counting Sort",
-        fn: null,
+        fn: stableCountingSort,
         time_worst: "O(n + k)",
         time_avg: "O(n + k)",
         time_best: "O(n + k)",
@@ -376,7 +411,7 @@ const ALGOS = [
     },
     {
         name: "LSD Radix Sort",
-        fn: null,
+        fn: lsdRadixSort,
         time_worst: "O(d(n + k))",
         time_avg: "O(d(n + k))",
         time_best: "O(d(n + k))",
@@ -388,7 +423,7 @@ const ALGOS = [
     },
     {
         name: "MSD Radix Sort",
-        fn: null,
+        fn: msdRadixSort,
         time_worst: "O(d(n + k))",
         time_avg: "O(d(n + k))",
         time_best: "O(d(n + k))",
@@ -400,7 +435,7 @@ const ALGOS = [
     },
     {
         name: "Cocktail Sort",
-        fn: null,
+        fn: cocktailSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n\u00b2)",
@@ -412,7 +447,7 @@ const ALGOS = [
     },
     {
         name: "Optimised Cocktail Sort",
-        fn: null,
+        fn: optimisedCocktailSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n)",
@@ -424,7 +459,7 @@ const ALGOS = [
     },
     {
         name: "Shell Sort",
-        fn: null,
+        fn: shellSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n log\u00b2 n)",
         time_best: "O(n log n)",
@@ -436,7 +471,7 @@ const ALGOS = [
     },
     {
         name: "Cycle Sort",
-        fn: null,
+        fn: cycleSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n\u00b2)",
@@ -448,7 +483,7 @@ const ALGOS = [
     },
     {
         name: "Pancake Sort",
-        fn: null,
+        fn: pancakeSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n)",
@@ -460,7 +495,7 @@ const ALGOS = [
     },
     {
         name: "Gnome Sort",
-        fn: null,
+        fn: gnomeSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n)",
@@ -472,19 +507,18 @@ const ALGOS = [
     },
     {
         name: "Timsort",
-        fn: null,
+        fn: timsort,
         time_worst: "O(n log n)",
         time_avg: "O(n log n)",
         time_best: "O(n)",
         aux: "O(n)",
         stable: true,
         inplace: false,
-        metrics: { swaps: false },
         desc: "A hybrid of insertion sort and merge sort developed by Tim Peters, used as the built-in sort in Python and for objects in Java (Java uses dual-pivot quicksort for primitive arrays). Detects and exploits existing runs of sorted or reverse-sorted data in the input, sorting small runs with insertion sort and merging them with a merge sort variant. Achieves O(n) on already sorted or nearly sorted input and consistently outperforms pure merge sort on real-world data. The gold standard for general-purpose stable sorting of in-memory data.",
     },
     {
         name: "Stooge Sort",
-        fn: null,
+        fn: stoogeSort,
         time_worst: "O(n^(log 3 / log 1.5))",
         time_avg: "O(n^(log 3 / log 1.5))",
         time_best: "O(n^(log 3 / log 1.5))",
@@ -496,7 +530,7 @@ const ALGOS = [
     },
     {
         name: "Slow Sort",
-        fn: null,
+        fn: slowSort,
         time_worst: "O(n^(log n / 2))",
         time_avg: "O(n^(log n / 2))",
         time_best: "O(n^(log n / 2))",
@@ -508,7 +542,7 @@ const ALGOS = [
     },
     {
         name: "Comb Sort",
-        fn: null,
+        fn: combSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2 / 2^p)",
         time_best: "O(n log n)",
@@ -520,7 +554,7 @@ const ALGOS = [
     },
     {
         name: "Comb Sort 11",
-        fn: null,
+        fn: combSort11,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2 / 2^p)",
         time_best: "O(n log n)",
@@ -532,7 +566,7 @@ const ALGOS = [
     },
     {
         name: "Intelligent Design Sort",
-        fn: null,
+        fn: intelligentDesignSort,
         time_worst: "O(1)",
         time_avg: "O(1)",
         time_best: "O(1)",
@@ -568,7 +602,7 @@ const ALGOS = [
     },
     {
         name: "Quantum Bogo Sort",
-        fn: null,
+        fn: quantumBogoSort,
         time_worst: "O(n)",
         time_avg: "O(n)",
         time_best: "O(n)",
@@ -580,7 +614,7 @@ const ALGOS = [
     },
     {
         name: "Tournament Sort",
-        fn: null,
+        fn: tournamentSort,
         time_worst: "O(n log n)",
         time_avg: "O(n log n)",
         time_best: "O(n log n)",

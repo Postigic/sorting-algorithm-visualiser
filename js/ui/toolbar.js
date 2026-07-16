@@ -6,11 +6,11 @@ import { unlockAudioContext } from "../audio/audio.js";
 
 const SPEEDS = {
     Glacial: 0.1,
-    Slow: 0.5,
+    Slow: 0.2,
     Normal: 1.0,
-    Fast: 2.0,
-    Turbo: 4.0,
-    Ludicrous: 6.0,
+    Fast: 5.0,
+    Turbo: 15.0,
+    Ludicrous: 50.0,
 };
 
 let els = {};

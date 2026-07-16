@@ -1,21 +1,18 @@
 import { engine } from "./core/engine.js";
 import { setupToolbar } from "./ui/toolbar.js";
 import { setupCanvas, drawBars } from "./ui/canvas.js";
+import { setupAuxRow } from "./ui/auxRow.js";
 import {
     setupInfoPanel,
     updateInfoPanel,
     updateStats,
 } from "./ui/infoPanel.js";
 
-let frameCount = 0;
-
-function renderLoop() {
+function renderLoop(now) {
     requestAnimationFrame(renderLoop);
 
-    frameCount++;
-
     if (engine.running) {
-        engine.tick(frameCount);
+        engine.tick(now);
         drawBars();
         updateStats();
 
@@ -32,6 +29,7 @@ function main() {
         document.querySelector("#bars-canvas"),
         document.querySelector("#depth-badge"),
     );
+    setupAuxRow(document.querySelector("#aux-row"));
     setupInfoPanel(document.querySelector("#panels"));
 
     drawBars();
