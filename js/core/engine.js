@@ -6,6 +6,43 @@ function emptyStats() {
     return { compares: 0, swaps: 0, writes: 0 };
 }
 
+function auxActiveValues(aux) {
+    if (!aux) return [];
+
+    if (aux.kind === "groups") {
+        const values = [];
+        for (const group of aux.groups) {
+            for (const idx of group.active) {
+                const val = group.values[idx];
+                if (val !== null && val !== undefined) values.push(val);
+            }
+        }
+        return values;
+    }
+
+    if (aux.kind === "histogram") {
+        return [...aux.active];
+    }
+
+    if (aux.kind === "tree") {
+        const values = [];
+        for (const idx of aux.active) {
+            if (idx >= aux.size) {
+                const leafIdx = idx - aux.size;
+                if (leafIdx < aux.n && aux.leaves[leafIdx] !== Infinity)
+                    values.push(aux.leaves[leafIdx]);
+            } else {
+                const winner = aux.tree[idx];
+                if (winner < aux.n && aux.leaves[winner] !== Infinity)
+                    values.push(aux.leaves[winner]);
+            }
+        }
+        return values;
+    }
+
+    return [];
+}
+
 export class Engine {
     constructor() {
         this.state = new State();
@@ -14,6 +51,7 @@ export class Engine {
         this.dataset = "Random";
         this.speed = 1.0;
         this.muted = false;
+        this.showAux = true;
         this.running = false;
 
         this.stats = emptyStats();
@@ -97,10 +135,22 @@ export class Engine {
         for (const i of this.state.active) {
             playValue(this.state.arr[i], this.state.n, this.speed, this.muted);
         }
+
+        if (this.showAux) {
+            for (const val of auxActiveValues(this.state.aux)) {
+                playValue(val, this.state.n, this.speed, this.muted);
+            }
+        }
     }
 
     _recordEvent(event) {
-        if (!event) return;
+        if (!event) {
+            this.state.activeType = null;
+            return;
+        }
+
+        this.state.activeType = event.type || null;
+
         if (event.type === "compare") this.stats.compares++;
         else if (event.type === "swap") this.stats.swaps++;
         else if (event.type === "write") this.stats.writes++;

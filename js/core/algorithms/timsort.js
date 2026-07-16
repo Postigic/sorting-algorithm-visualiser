@@ -103,10 +103,13 @@ function* insertionRun(state, arr, lo, hi) {
             yield { type: "compare", indices: [j, j + 1] };
 
             arr[j + 1] = arr[j];
+            yield { type: "write", indices: [j + 1] };
+
             j--;
         }
 
         arr[j + 1] = key;
+        yield { type: "write", indices: [j + 1] };
     }
 }
 

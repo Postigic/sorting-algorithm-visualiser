@@ -1,6 +1,6 @@
 import { engine } from "./core/engine.js";
 import { setupToolbar } from "./ui/toolbar.js";
-import { setupCanvas, drawBars } from "./ui/canvas.js";
+import { setupCanvas, drawBars, forceRefresh } from "./ui/canvas.js";
 import { setupAuxRow } from "./ui/auxRow.js";
 import {
     setupInfoPanel,
@@ -19,6 +19,7 @@ function renderLoop(now) {
         if (!engine.running) {
             document.querySelector("#run-btn").textContent = "Run";
             document.querySelector("#step-btn").disabled = false;
+            forceRefresh();
         }
     }
 }

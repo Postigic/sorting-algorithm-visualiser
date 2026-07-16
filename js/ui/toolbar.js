@@ -73,7 +73,12 @@ function onStep() {
     drawBars();
     updateInfoPanel();
 
-    if (!alive) els.runBtn.textContent = "Run";
+    if (!alive) {
+        els.runBtn.textContent = "Run";
+        forceRefresh(); // never seen this happen but just in case
+    } else {
+        drawBars();
+    }
 }
 
 function onSizeChange(e) {
@@ -91,6 +96,11 @@ function onMute(e) {
     engine.muted = e.target.checked;
 }
 
+function onShowAux(e) {
+    engine.showAux = e.target.checked;
+    drawBars();
+}
+
 export function setupToolbar(container) {
     els = {
         algoSelect: container.querySelector("#algo-select"),
@@ -98,6 +108,7 @@ export function setupToolbar(container) {
         sizeSelect: container.querySelector("#size-select"),
         speedSelect: container.querySelector("#speed-select"),
         muteCheckbox: container.querySelector("#mute-checkbox"),
+        showAuxCheckbox: container.querySelector("#show-aux-checkbox"),
         shuffleBtn: container.querySelector("#shuffle-btn"),
         stepBtn: container.querySelector("#step-btn"),
         runBtn: container.querySelector("#run-btn"),
@@ -108,12 +119,14 @@ export function setupToolbar(container) {
     populateSelect(els.sizeSelect, SIZES, String(engine.state.n));
     populateSelect(els.speedSelect, Object.keys(SPEEDS), "Normal");
     els.muteCheckbox.checked = engine.muted;
+    els.showAuxCheckbox.checked = engine.showAux;
 
     els.algoSelect.addEventListener("change", onAlgoChange);
     els.datasetSelect.addEventListener("change", onDatasetChange);
     els.sizeSelect.addEventListener("change", onSizeChange);
     els.speedSelect.addEventListener("change", onSpeedChange);
     els.muteCheckbox.addEventListener("change", onMute);
+    els.showAuxCheckbox.addEventListener("change", onShowAux);
 
     els.shuffleBtn.addEventListener("click", onShuffle);
     els.stepBtn.addEventListener("click", onStep);

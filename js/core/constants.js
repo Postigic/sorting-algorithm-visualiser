@@ -479,7 +479,7 @@ const ALGOS = [
         stable: false,
         inplace: true,
         metrics: { swaps: false },
-        desc: "Based on the cycle structure of permutations; each element is moved directly to its final position in a cycle, then the next cycle begins. Minimises array writes to at most n-1, making it uniquely suited to memory where writes are expensive or have limited endurance such as flash storage. Despite minimising writes, it is slow in practice due to O(n\u00b2) comparisons. Rarely seen outside of specialised embedded or hardware contexts.",
+        desc: "Based on the cycle structure of permutations; each element is moved directly to its final position in a cycle, then the next cycle begins. Minimises meaningful array writes to at most n-1, making it uniquely suited to memory where writes are expensive or have limited endurance such as flash storage. Despite minimising writes, it is slow in practice due to O(n\u00b2) comparisons. Rarely seen outside of specialised embedded or hardware contexts.",
     },
     {
         name: "Pancake Sort",

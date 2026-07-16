@@ -85,7 +85,7 @@ export function* stableCountingSort(state) {
         countArr[val]--;
 
         outputGroup.active = new Set();
-        yield { type: "write", indices: [pos] };
+        yield;
     }
 
     for (let i = 0; i < n; i++) {

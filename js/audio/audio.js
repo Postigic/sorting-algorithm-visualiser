@@ -2,6 +2,9 @@ const AUDIO_CTX = new (window.AudioContext || window.webkitAudioContext)();
 
 const SUSTAIN = 0.12;
 const VOLUME = 0.08;
+const MAX_VOICES = 32;
+
+const activeVoices = [];
 
 function unlockAudioContext() {
     if (AUDIO_CTX.state === "suspended") {
@@ -72,9 +75,21 @@ export function playTone(f, speed, muted) {
 
     unlockAudioContext();
 
+    if (activeVoices.length >= MAX_VOICES) {
+        return;
+    }
+
     const source = AUDIO_CTX.createBufferSource();
     source.buffer = makeNoteBuffer(f, speed);
     source.connect(AUDIO_CTX.destination);
+
+    activeVoices.push(source);
+
+    source.onended = () => {
+        const idx = activeVoices.indexOf(source);
+        if (idx !== -1) activeVoices.splice(idx, 1);
+    };
+
     source.start();
 }
 

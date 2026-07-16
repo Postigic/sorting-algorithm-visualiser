@@ -6,6 +6,11 @@ let canvasEl = null;
 let depthBadgeEl = null;
 let cachedColors = null;
 
+const MIN_ACTIVE_REFRESH_MS = 80;
+let lastActiveRefresh = 0;
+let cachedActive = new Set();
+let cachedActiveType = null;
+
 function cssVar(name) {
     return getComputedStyle(document.documentElement)
         .getPropertyValue(name)
@@ -15,7 +20,10 @@ function cssVar(name) {
 function computeColors() {
     return {
         default: cssVar("--bar-default"),
-        active: cssVar("--bar-active"),
+        highlight: cssVar("--bar-highlight"),
+        compare: cssVar("--bar-compare"),
+        swap: cssVar("--bar-swap"),
+        write: cssVar("--bar-write"),
         sorted: cssVar("--bar-sorted"),
         pivot: cssVar("--bar-pivot"),
     };
@@ -49,8 +57,17 @@ function resizeCanvas() {
 export function drawBars() {
     if (!ctx) return;
 
-    const { arr, active, sorted, pivot, n } = engine.state;
+    const { arr, sorted, pivot, n } = engine.state;
     const len = arr.length;
+
+    const now = performance.now();
+    const shouldRefreshActive =
+        now - lastActiveRefresh >= MIN_ACTIVE_REFRESH_MS;
+    if (shouldRefreshActive) {
+        cachedActive = new Set(engine.state.active);
+        cachedActiveType = engine.state.activeType;
+        lastActiveRefresh = now;
+    }
 
     if (len > 0) {
         const dpr = window.devicePixelRatio || 1;
@@ -61,10 +78,17 @@ export function drawBars() {
 
         const {
             default: colDefault,
-            active: colActive,
+            highlight: colHighlight,
             sorted: colSorted,
             pivot: colPivot,
+            compare: colCompare,
+            swap: colSwap,
+            write: colWrite,
         } = cachedColors;
+        const activeColor =
+            { compare: colCompare, swap: colSwap, write: colWrite }[
+                cachedActiveType
+            ] || colHighlight;
 
         const barW = w / len;
 
@@ -76,7 +100,7 @@ export function drawBars() {
 
             let color = colDefault;
             if (pivot.has(i)) color = colPivot;
-            else if (active.has(i)) color = colActive;
+            else if (cachedActive.has(i)) color = activeColor;
             else if (sorted.has(i)) color = colSorted;
 
             ctx.fillStyle = color;
@@ -85,7 +109,15 @@ export function drawBars() {
     }
 
     updateDepthBadge();
-    renderAuxRow();
+
+    if (shouldRefreshActive) {
+        renderAuxRow();
+    }
+}
+
+export function forceRefresh() {
+    lastActiveRefresh = 0;
+    drawBars();
 }
 
 function updateDepthBadge() {

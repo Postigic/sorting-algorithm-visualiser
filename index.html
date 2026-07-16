@@ -42,6 +42,11 @@
                         <input type="checkbox" id="mute-checkbox" />
                         <span>Mute</span>
                     </label>
+
+                    <label class="control checkbox">
+                        <input type="checkbox" id="show-aux-checkbox" checked />
+                        <span>Show Aux</span>
+                    </label>
                 </div>
 
                 <div class="toolbar-row">
@@ -88,6 +93,59 @@
                         ><span id="stat-swaps" class="mono"></span>
                         <span class="label">Writes</span
                         ><span id="stat-writes" class="mono"></span>
+                    </div>
+
+                    <div class="legend">
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-default)"
+                            ></span
+                            >Default</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-highlight)"
+                            ></span
+                            >Highlight</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-compare)"
+                            ></span
+                            >Compare</span
+                        >
+
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-swap)"
+                            ></span
+                            >Swap</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-write)"
+                            ></span
+                            >Write</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-sorted)"
+                            ></span
+                            >Sorted</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-pivot)"
+                            ></span
+                            >Pivot</span
+                        >
                     </div>
                 </div>
             </section>

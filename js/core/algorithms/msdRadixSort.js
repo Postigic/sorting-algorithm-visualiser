@@ -34,6 +34,10 @@ function* msdSort(state, arr, lo, hi, digit, depth = 0) {
         yield;
 
         buckets[d].push(arr[i]);
+
+        groups[d].active = new Set([buckets[d].length - 1]);
+        yield;
+        groups[d].active = new Set();
     }
 
     let pos = lo;
@@ -41,11 +45,11 @@ function* msdSort(state, arr, lo, hi, digit, depth = 0) {
     for (let d = 0; d < 10; d++) {
         for (let idx = 0; idx < buckets[d].length; idx++) {
             groups[d].active = new Set([idx]);
+            state.active = new Set([pos]);
             yield;
 
             arr[pos] = buckets[d][idx];
 
-            state.active = new Set([pos]);
             groups[d].active = new Set();
             groups[d].done.add(idx);
             yield { type: "write", indices: [pos] };

@@ -10,7 +10,10 @@
     --accent-active: #554538;
 
     --bar-default: #4682d2;
-    --bar-active: #d25037;
+    --bar-highlight: #e6c84a;
+    --bar-compare: #d25037;
+    --bar-swap: #a569d2;
+    --bar-write: #4dc9c9;
     --bar-sorted: #2d9664;
     --bar-pivot: #e6911e;
 }
@@ -29,11 +32,19 @@ body {
 
 #app {
     width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+}
+
+#app > * {
+    margin-bottom: 12px;
+}
+
+#app > *:last-child {
+    margin-bottom: 0;
 }
 
 #toolbar {
@@ -71,9 +82,7 @@ button {
     border-radius: 4px;
     padding: 6px 10px;
     font-size: 14px;
-}
-
-button {
+    transition: background 150ms ease;
     cursor: pointer;
 }
 
@@ -89,6 +98,17 @@ button:disabled {
     color: var(--text-muted);
     cursor: default;
     opacity: 0.5;
+}
+
+button:disabled:hover {
+    background: var(--panel-bg);
+}
+
+button:focus-visible,
+select:focus-visible,
+input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 input[type="checkbox"] {
@@ -138,16 +158,23 @@ input[type="checkbox"] {
 #aux-row {
     display: grid;
     grid-template-rows: 0fr;
+    margin-bottom: 0;
     border: 1px solid transparent;
     border-radius: 4px;
     transition:
-        grid-template-rows 200ms ease,
-        border-color 200ms ease;
+        grid-template-rows 200ms ease 130ms,
+        border-color 200ms ease 130ms,
+        margin-bottom 200ms ease 130ms;
 }
 
 #aux-row.visible {
     grid-template-rows: 1fr;
+    margin-bottom: 12px;
     border-color: var(--border);
+    transition:
+        grid-template-rows 200ms ease,
+        border-color 200ms ease,
+        margin-bottom 200ms ease;
 }
 
 #aux-row-inner {
@@ -156,8 +183,20 @@ input[type="checkbox"] {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+    align-content: flex-start;
     gap: 6px 16px;
+    opacity: 0;
+    transition:
+        opacity 130ms ease,
+        padding 130ms ease;
+}
+
+#aux-row.visible #aux-row-inner {
     padding: 8px 10px;
+    opacity: 1;
+    transition:
+        opacity 150ms ease 200ms,
+        padding 150ms ease 200ms;
 }
 
 .aux-group {
@@ -168,9 +207,10 @@ input[type="checkbox"] {
 }
 
 .aux-group-label {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text-muted);
     min-width: 12px;
+    margin-right: 12px;
 }
 
 .aux-chips {
@@ -192,8 +232,8 @@ input[type="checkbox"] {
 }
 
 .aux-chip.active {
-    border-color: var(--bar-active);
-    color: var(--bar-active);
+    border-color: var(--bar-compare);
+    color: var(--bar-compare);
 }
 
 .aux-chip.done {
@@ -204,9 +244,6 @@ input[type="checkbox"] {
 .aux-chip.empty {
     color: var(--text-muted);
     border-style: dashed;
-}
-
-.aux-chip.empty {
     text-decoration: none;
 }
 
@@ -226,12 +263,20 @@ input[type="checkbox"] {
 }
 
 .aux-hist-bar.active {
-    background: var(--bar-active);
+    background: var(--bar-compare);
 }
 
 .aux-hist-bar.done {
     background: var(--bar-sorted);
     opacity: 0.6;
+}
+
+.aux-tree-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+    max-width: 100%;
 }
 
 #panels {
@@ -254,6 +299,32 @@ input[type="checkbox"] {
     color: var(--text);
 }
 
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.legend-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
 .stat-row,
 .stat-grid {
     display: grid;
@@ -272,4 +343,23 @@ input[type="checkbox"] {
 
 .mono {
     font-family: "JetBrains Mono", monospace;
+}
+
+@media (max-width: 768px) {
+    #app {
+        width: 100%;
+        padding: 12px;
+    }
+
+    #panels {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-row {
+        grid-template-columns: repeat(2, max-content);
+    }
+
+    #canvas-wrap {
+        height: 320px;
+    }
 }

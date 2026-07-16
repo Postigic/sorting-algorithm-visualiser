@@ -46,8 +46,8 @@ function* countingPass(state, arr, exp, isLast) {
         output[pos] = val;
         count[digit]--;
 
+        yield;
         outputGroup.active = new Set();
-        yield { type: "write", indices: [pos] };
     }
 
     for (let i = 0; i < n; i++) {
