@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sorting Visualiser</title>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <main id="app">
+            <section id="toolbar">
+                <div class="toolbar-row">
+                    <label class="control">
+                        <span>Algorithm</span>
+                        <select id="algo-select"></select>
+                    </label>
+
+                    <label class="control">
+                        <span>Dataset</span>
+                        <select id="dataset-select"></select>
+                    </label>
+
+                    <label class="control">
+                        <span>Size</span>
+                        <select id="size-select"></select>
+                    </label>
+
+                    <label class="control">
+                        <span>Speed</span>
+                        <select id="speed-select"></select>
+                    </label>
+
+                    <label class="control checkbox">
+                        <input type="checkbox" id="mute-checkbox" />
+                        <span>Mute</span>
+                    </label>
+
+                    <label class="control checkbox">
+                        <input type="checkbox" id="show-aux-checkbox" checked />
+                        <span>Show Aux</span>
+                    </label>
+                </div>
+
+                <div class="toolbar-row">
+                    <button id="shuffle-btn" title="F5">Shuffle</button>
+                    <button id="step-btn" title="Right Arrow">Step</button>
+                    <button id="run-btn" title="Space">Run</button>
+                </div>
+            </section>
+
+            <section id="canvas-wrap">
+                <canvas id="bars-canvas"></canvas>
+                <div id="depth-badge" class="badge"></div>
+            </section>
+
+            <section id="aux-row">
+                <div id="aux-row-inner"></div>
+            </section>
+
+            <section id="panels">
+                <div id="info-panel" class="panel">
+                    <p id="info-desc"></p>
+
+                    <div class="stat-row">
+                        <span class="label">Worst</span
+                        ><span id="info-worst" class="mono"></span>
+                        <span class="label">Avg</span
+                        ><span id="info-avg" class="mono"></span>
+                        <span class="label">Best</span
+                        ><span id="info-best" class="mono"></span>
+                        <span class="label">Aux</span
+                        ><span id="info-aux" class="mono"></span>
+                        <span class="label">Stable</span
+                        ><span id="info-stable"></span>
+                        <span class="label">In-place</span
+                        ><span id="info-inplace"></span>
+                    </div>
+                </div>
+
+                <div id="stats-panel" class="panel">
+                    <div class="stat-grid">
+                        <span class="label">Compares</span
+                        ><span id="stat-compares" class="mono"></span>
+                        <span class="label">Swaps</span
+                        ><span id="stat-swaps" class="mono"></span>
+                        <span class="label">Writes</span
+                        ><span id="stat-writes" class="mono"></span>
+                    </div>
+
+                    <div class="legend">
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-default)"
+                            ></span
+                            >Default</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-highlight)"
+                            ></span
+                            >Highlight</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-compare)"
+                            ></span
+                            >Compare</span
+                        >
+
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-swap)"
+                            ></span
+                            >Swap</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-write)"
+                            ></span
+                            >Write</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-sorted)"
+                            ></span
+                            >Sorted</span
+                        >
+                        <span class="legend-item"
+                            ><span
+                                class="legend-dot"
+                                style="background: var(--bar-pivot)"
+                            ></span
+                            >Pivot</span
+                        >
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script type="module" src="js/main.js"></script>
+    </body>
+</html>
