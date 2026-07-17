@@ -2,8 +2,9 @@ export function* mergeSort(state) {
     const arr = state.arr;
     const n = arr.length;
 
-    yield* topDown(state, arr, 0, n - 1);
+    yield* topDown(state, arr, 0, n - 1, 0);
 
+    state.depth = 0;
     for (let i = 0; i < n; i++) state.sorted.add(i);
 }
 
@@ -27,13 +28,13 @@ export function* bottomUpMergeSort(state) {
     for (let i = 0; i < n; i++) state.sorted.add(i);
 }
 
-function* topDown(state, arr, left, right) {
+function* topDown(state, arr, left, right, depth) {
     if (left >= right) return;
 
     const mid = Math.floor((left + right) / 2);
 
-    yield* topDown(state, arr, left, mid);
-    yield* topDown(state, arr, mid + 1, right);
+    yield* topDown(state, arr, left, mid, depth + 1);
+    yield* topDown(state, arr, mid + 1, right, depth + 1);
     yield* merge(state, arr, left, mid, right);
 }
 

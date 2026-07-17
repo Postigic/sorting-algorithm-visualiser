@@ -5,14 +5,13 @@ export function* msdRadixSort(state) {
     const maxNum = Math.max(...arr);
     const maxDigits = String(maxNum).length;
 
-    yield* msdSort(state, arr, 0, n - 1, maxDigits - 1);
-
-    for (let i = 0; i < n; i++) state.sorted.add(i);
+    yield* msdSort(state, arr, 0, n - 1, maxDigits - 1, 0);
 
     state.depth = 0;
+    for (let i = 0; i < n; i++) state.sorted.add(i);
 }
 
-function* msdSort(state, arr, lo, hi, digit, depth = 0) {
+function* msdSort(state, arr, lo, hi, digit, depth) {
     state.depth = depth;
 
     if (lo >= hi || digit < 0) return;

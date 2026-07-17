@@ -9,12 +9,14 @@ import {
 import { combSort, combSort11 } from "./algorithms/combSort.js";
 import { countingSort, stableCountingSort } from "./algorithms/countingSort.js";
 import { cycleSort } from "./algorithms/cycleSort.js";
+import { fairShareSort } from "./algorithms/fairShareSort.js";
 import { gnomeSort } from "./algorithms/gnomeSort.js";
 import { heapSort } from "./algorithms/heapSort.js";
 import {
     insertionSort,
     binaryInsertionSort,
 } from "./algorithms/insertionSort.js";
+import { hitchhikersSort } from "./algorithms/hitchhikersSort.js";
 import { intelligentDesignSort } from "./algorithms/intelligentDesignSort.js";
 import { introspectiveSort } from "./algorithms/introspectiveSort.js";
 import { lsdRadixSort } from "./algorithms/lsdRadixSort.js";
@@ -466,7 +468,7 @@ const ALGOS = [
         aux: "O(1)",
         stable: false,
         inplace: true,
-        metrics: { writes: false },
+        metrics: { swaps: false },
         desc: "Insertion sort generalised to compare elements at a shrinking gap distance, performing a final gap-1 pass to finish. The large initial gaps move elements close to their final positions quickly, making the last insertion sort pass cheap. This implementation uses simple halving for the gap sequence, giving O(n\u00b2) worst case; better sequences like Ciura\u2019s improve this significantly in practice. A good middle ground that is simple to implement and faster than pure insertion sort on larger inputs.",
     },
     {
@@ -634,6 +636,30 @@ const ALGOS = [
         stable: false,
         inplace: true,
         desc: "A hybrid of quicksort, heapsort, and insertion sort. Starts with quicksort for its practical speed, but tracks recursion depth: if it exceeds 2 * floor(log2(n)), indicating bad pivot choices, it switches to heapsort to guarantee O(n log n) worst case. Small subarrays of 16 or fewer elements fall through to insertion sort, which has low overhead at small sizes. The result is quicksort\u2019s average-case performance with heapsort\u2019s worst-case guarantee. Used in most production sort implementations including C++ std::sort.",
+    },
+    {
+        name: "Hitchhiker's Sort",
+        fn: hitchhikersSort,
+        time_worst: "O(n)",
+        time_avg: "O(n)",
+        time_best: "O(n)",
+        aux: "O(1)",
+        stable: null,
+        inplace: true,
+        metrics: { compares: false, swaps: false },
+        desc: "42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42",
+    },
+    {
+        name: "Fair Share Sort",
+        fn: fairShareSort,
+        time_worst: "O(n)",
+        time_avg: "O(n)",
+        time_best: "O(n)",
+        aux: "O(1)",
+        stable: null,
+        inplace: true,
+        metrics: { compares: false, swaps: false },
+        desc: "Calculates the total wealth of the array, divides it equally among all elements, and redistributes the proceeds without regard for their previous values. Since every element receives an identical fair share, no element can be out of order. Preserves the total sum while destroying virtually every other property of the input.",
     },
 ].sort((a, b) => a.name.localeCompare(b.name));
 

@@ -13,6 +13,7 @@
     --bar-highlight: #e6c84a;
     --bar-compare: #d25037;
     --bar-swap: #a569d2;
+    --bar-self-swap: #ffffff;
     --bar-write: #4dc9c9;
     --bar-sorted: #2d9664;
     --bar-pivot: #e6911e;
@@ -323,6 +324,11 @@ input[type="checkbox"] {
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+}
+
+.legend-dot-outline {
+    background: transparent;
+    border: 2px dashed;
 }
 
 .stat-row,

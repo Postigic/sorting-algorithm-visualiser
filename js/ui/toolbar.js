@@ -1,5 +1,5 @@
 import { engine } from "../core/engine.js";
-import { drawBars } from "./canvas.js";
+import { drawBars, forceRefresh } from "./canvas.js";
 import { updateInfoPanel } from "./infoPanel.js";
 import { DATASET_NAMES, ALGO_NAMES, SIZES } from "../core/constants.js";
 import { unlockAudioContext } from "../audio/audio.js";

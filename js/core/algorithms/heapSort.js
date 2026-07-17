@@ -3,7 +3,7 @@ export function* heapSort(state) {
     const n = arr.length;
 
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-        yield* heapify(state, arr, n, i);
+        yield* heapify(state, arr, n, i, 0);
     }
 
     for (let i = n - 1; i > 0; i--) {
@@ -13,13 +13,16 @@ export function* heapSort(state) {
         yield { type: "swap", indices: [0, i] };
 
         state.sorted.add(i);
-        yield* heapify(state, arr, i, 0);
+        yield* heapify(state, arr, i, 0, 0);
     }
 
+    state.depth = 0;
     state.sorted.add(0);
 }
 
-function* heapify(state, arr, n, i) {
+function* heapify(state, arr, n, i, depth) {
+    state.depth = depth;
+
     let largest = i;
     const left = 2 * i + 1;
     const right = 2 * i + 2;
@@ -44,6 +47,6 @@ function* heapify(state, arr, n, i) {
         state.active = new Set([i, largest]);
         yield { type: "swap", indices: [i, largest] };
 
-        yield* heapify(state, arr, n, largest);
+        yield* heapify(state, arr, n, largest, depth + 1);
     }
 }

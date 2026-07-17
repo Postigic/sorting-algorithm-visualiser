@@ -10,6 +10,7 @@ const MIN_ACTIVE_REFRESH_MS = 80;
 let lastActiveRefresh = 0;
 let cachedActive = new Set();
 let cachedActiveType = null;
+let cachedSelfSwap = false;
 
 function cssVar(name) {
     return getComputedStyle(document.documentElement)
@@ -23,6 +24,7 @@ function computeColors() {
         highlight: cssVar("--bar-highlight"),
         compare: cssVar("--bar-compare"),
         swap: cssVar("--bar-swap"),
+        selfSwap: cssVar("--bar-self-swap"),
         write: cssVar("--bar-write"),
         sorted: cssVar("--bar-sorted"),
         pivot: cssVar("--bar-pivot"),
@@ -66,6 +68,7 @@ export function drawBars() {
     if (shouldRefreshActive) {
         cachedActive = new Set(engine.state.active);
         cachedActiveType = engine.state.activeType;
+        cachedSelfSwap = engine.state.selfSwap;
         lastActiveRefresh = now;
     }
 
@@ -83,6 +86,7 @@ export function drawBars() {
             pivot: colPivot,
             compare: colCompare,
             swap: colSwap,
+            selfSwap: colSelfSwap,
             write: colWrite,
         } = cachedColors;
         const activeColor =
@@ -105,6 +109,24 @@ export function drawBars() {
 
             ctx.fillStyle = color;
             ctx.fillRect(x0, y0, Math.max(1, barW - 1), barH);
+
+            if (
+                cachedActiveType === "swap" &&
+                cachedSelfSwap &&
+                cachedActive.has(i)
+            ) {
+                ctx.save();
+                ctx.strokeStyle = colSelfSwap;
+                ctx.lineWidth = 2;
+                ctx.setLineDash([4, 3]);
+                ctx.strokeRect(
+                    x0 + 1,
+                    y0 + 1,
+                    Math.max(1, barW - 1) - 2,
+                    Math.max(1, barH - 2),
+                );
+                ctx.restore();
+            }
         }
     }
 

@@ -1,29 +1,36 @@
 export function* quickSort(state) {
     const arr = state.arr;
-    yield* qs(state, arr, 0, arr.length - 1, false, false);
+    yield* qs(state, arr, 0, arr.length - 1, false, false, 0);
+    state.depth = 0;
 }
 
 export function* randomisedQuickSort(state) {
     const arr = state.arr;
-    yield* qs(state, arr, 0, arr.length - 1, true, false);
+    yield* qs(state, arr, 0, arr.length - 1, true, false, 0);
+    state.depth = 0;
 }
 
 export function* medianOfThreeQuickSort(state) {
     const arr = state.arr;
-    yield* qs(state, arr, 0, arr.length - 1, false, true);
+    yield* qs(state, arr, 0, arr.length - 1, false, true, 0);
+    state.depth = 0;
 }
 
 export function* threeWayQuickSort(state) {
     const arr = state.arr;
-    yield* qs3way(state, arr, 0, arr.length - 1);
+    yield* qs3way(state, arr, 0, arr.length - 1, 0);
+    state.depth = 0;
 }
 
 export function* dualPivotQuickSort(state) {
     const arr = state.arr;
-    yield* qsDual(state, arr, 0, arr.length - 1);
+    yield* qsDual(state, arr, 0, arr.length - 1, 0);
+    state.depth = 0;
 }
 
-function* qs(state, arr, lo, hi, randomised, median) {
+function* qs(state, arr, lo, hi, randomised, median, depth) {
+    state.depth = depth;
+
     if (lo >= hi) {
         if (lo === hi) state.sorted.add(lo);
         return;
@@ -34,8 +41,10 @@ function* qs(state, arr, lo, hi, randomised, median) {
     state.sorted.add(pivotIdx);
     state.pivot = new Set();
 
-    yield* qs(state, arr, lo, pivotIdx - 1, randomised, median);
-    yield* qs(state, arr, pivotIdx + 1, hi, randomised, median);
+    yield* qs(state, arr, lo, pivotIdx - 1, randomised, median, depth + 1);
+    state.depth = depth;
+    yield* qs(state, arr, pivotIdx + 1, hi, randomised, median, depth + 1);
+    state.depth = depth;
 }
 
 function* partition(state, arr, lo, hi, randomised, median) {
@@ -108,7 +117,9 @@ function* partition(state, arr, lo, hi, randomised, median) {
     return i + 1;
 }
 
-function* qs3way(state, arr, lo, hi) {
+function* qs3way(state, arr, lo, hi, depth) {
+    state.depth = depth;
+
     if (lo >= hi) {
         if (lo === hi) state.sorted.add(lo);
         return;
@@ -118,8 +129,10 @@ function* qs3way(state, arr, lo, hi) {
 
     for (let i = lt; i <= gt; i++) state.sorted.add(i);
 
-    yield* qs3way(state, arr, lo, lt - 1);
-    yield* qs3way(state, arr, gt + 1, hi);
+    yield* qs3way(state, arr, lo, lt - 1, depth + 1);
+    state.depth = depth;
+    yield* qs3way(state, arr, gt + 1, hi, depth + 1);
+    state.depth = depth;
 }
 
 function* partition3way(state, arr, lo, hi) {
@@ -159,7 +172,9 @@ function* partition3way(state, arr, lo, hi) {
     return [lt, gt];
 }
 
-function* qsDual(state, arr, lo, hi) {
+function* qsDual(state, arr, lo, hi, depth) {
+    state.depth = depth;
+
     if (lo >= hi) {
         if (lo === hi) state.sorted.add(lo);
         return;
@@ -170,9 +185,12 @@ function* qsDual(state, arr, lo, hi) {
     state.sorted.add(lt);
     state.sorted.add(gt);
 
-    yield* qsDual(state, arr, lo, lt - 1);
-    yield* qsDual(state, arr, lt + 1, gt - 1);
-    yield* qsDual(state, arr, gt + 1, hi);
+    yield* qsDual(state, arr, lo, lt - 1, depth + 1);
+    state.depth = depth;
+    yield* qsDual(state, arr, lt + 1, gt - 1, depth + 1);
+    state.depth = depth;
+    yield* qsDual(state, arr, gt + 1, hi, depth + 1);
+    state.depth = depth;
 }
 
 function* partitionDual(state, arr, lo, hi) {

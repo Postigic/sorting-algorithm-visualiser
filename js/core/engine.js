@@ -150,6 +150,11 @@ export class Engine {
         }
 
         this.state.activeType = event.type || null;
+        this.state.selfSwap =
+            event.type === "swap" &&
+            Array.isArray(event.indices) &&
+            event.indices.length === 2 &&
+            event.indices[0] === event.indices[1];
 
         if (event.type === "compare") this.stats.compares++;
         else if (event.type === "swap") this.stats.swaps++;

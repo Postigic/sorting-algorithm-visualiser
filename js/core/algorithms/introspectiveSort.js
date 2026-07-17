@@ -79,7 +79,7 @@ function* heapSort(state, arr, lo, hi) {
     const n = hi - lo + 1;
 
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-        yield* heapify(state, arr, lo, n, lo + i);
+        yield* heapify(state, arr, lo, n, lo + i, 0);
     }
 
     for (let i = n - 1; i > 0; i--) {
@@ -88,13 +88,15 @@ function* heapSort(state, arr, lo, hi) {
         yield { type: "swap", indices: [lo, lo + i] };
 
         state.sorted.add(lo + i);
-        yield* heapify(state, arr, lo, i, lo);
+        yield* heapify(state, arr, lo, i, lo, 0);
     }
 
     state.sorted.add(lo);
 }
 
-function* heapify(state, arr, base, n, i) {
+function* heapify(state, arr, base, n, i, depth) {
+    state.depth = depth;
+
     const localI = i - base;
     let largest = localI;
     const left = 2 * localI + 1;
@@ -120,7 +122,7 @@ function* heapify(state, arr, base, n, i) {
         state.active = new Set([i, base + largest]);
         yield { type: "swap", indices: [i, base + largest] };
 
-        yield* heapify(state, arr, base, n, base + largest);
+        yield* heapify(state, arr, base, n, base + largest, depth + 1);
     }
 }
 

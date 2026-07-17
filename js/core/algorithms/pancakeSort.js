@@ -4,13 +4,17 @@ export function* pancakeSort(state) {
 
     for (let size = n; size > 1; size--) {
         let maxIdx = 0;
+
         for (let k = 1; k < size; k++) {
+            state.active = new Set([maxIdx, k]);
+            yield { type: "compare" };
+
             if (arr[k] > arr[maxIdx]) maxIdx = k;
         }
 
         if (maxIdx !== size - 1) {
             state.active = new Set([maxIdx, size - 1]);
-            yield { type: "compare", indices: [maxIdx, size - 1] };
+            yield;
 
             if (maxIdx !== 0) {
                 state.active = new Set([0, maxIdx]);
