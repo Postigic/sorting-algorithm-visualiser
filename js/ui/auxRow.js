@@ -54,6 +54,101 @@ export function renderAuxRow() {
     }
 }
 
+function renderGroups(groups) {
+    for (const group of groups) {
+        const groupEl = document.createElement("div");
+        groupEl.className = "aux-group";
+
+        if (group.label !== null && group.label !== undefined) {
+            const labelEl = document.createElement("span");
+            labelEl.className = "aux-group-label";
+            labelEl.textContent = group.label;
+            groupEl.appendChild(labelEl);
+        }
+
+        const chipsEl = document.createElement("div");
+        chipsEl.className = "aux-chips";
+
+        group.values.forEach((val, idx) => {
+            const chip = document.createElement("span");
+            chip.className = "aux-chip";
+
+            if (val === null || val === undefined) {
+                chip.classList.add("empty");
+                chip.textContent = "\u00b7";
+            } else {
+                chip.textContent = String(val);
+            }
+
+            if (
+                group.active &&
+                group.active.has(idx) &&
+                !engine.disableFlashing
+            )
+                chip.classList.add("active");
+            if (group.done && group.done.has(idx)) chip.classList.add("done");
+
+            chipsEl.appendChild(chip);
+        });
+
+        groupEl.appendChild(chipsEl);
+        innerEl.appendChild(groupEl);
+    }
+}
+
+const HIST_BAR_AREA_HEIGHT = 40; // must match .aux-hist-bar-slot's height in style.css
+
+function renderHistogram({ entries, active, done }) {
+    const maxCount = Math.max(1, ...entries.map((e) => e.count));
+
+    const containerWidth = Math.max(200, innerEl.clientWidth || 600);
+    const showLabels = containerWidth / entries.length >= 14;
+
+    const wrap = document.createElement("div");
+    wrap.className = "aux-histogram";
+
+    entries.forEach((entry, idx) => {
+        const isActive = active && active.has(idx) && !engine.disableFlashing;
+        const isDone = done && done.has(idx);
+
+        const col = document.createElement("div");
+        col.className = "aux-hist-col";
+
+        if (showLabels) {
+            const countEl = document.createElement("span");
+            countEl.className = "aux-hist-count";
+            countEl.textContent = entry.count > 0 ? String(entry.count) : "";
+            if (isActive) countEl.classList.add("active");
+            else if (isDone) countEl.classList.add("done");
+            col.appendChild(countEl);
+        }
+
+        const slot = document.createElement("div");
+        slot.className = "aux-hist-bar-slot";
+
+        const bar = document.createElement("div");
+        bar.className = "aux-hist-bar";
+        bar.style.height = `${(entry.count / maxCount) * HIST_BAR_AREA_HEIGHT}px`;
+
+        if (isActive) bar.classList.add("active");
+        else if (isDone) bar.classList.add("done");
+
+        slot.appendChild(bar);
+        col.appendChild(slot);
+
+        if (showLabels) {
+            const labelEl = document.createElement("span");
+            labelEl.className = "aux-hist-label";
+            labelEl.textContent = entry.label;
+            col.appendChild(labelEl);
+        }
+
+        wrap.appendChild(col);
+    });
+
+    innerEl.appendChild(wrap);
+}
+
 function renderTree(aux) {
     const { tree, leaves, size, n, active, done } = aux;
     const numLevels = Math.log2(size);
@@ -143,67 +238,4 @@ function treeNode(cx, cy, r, val, isActive, isDone, showLabels) {
     const text = `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="10" font-family="ui-monospace, monospace" fill="var(--text)" opacity="${opacity}">${label}</text>`;
 
     return `<g>${circle}${text}</g>`;
-}
-
-function renderGroups(groups) {
-    for (const group of groups) {
-        const groupEl = document.createElement("div");
-        groupEl.className = "aux-group";
-
-        if (group.label !== null && group.label !== undefined) {
-            const labelEl = document.createElement("span");
-            labelEl.className = "aux-group-label";
-            labelEl.textContent = group.label;
-            groupEl.appendChild(labelEl);
-        }
-
-        const chipsEl = document.createElement("div");
-        chipsEl.className = "aux-chips";
-
-        group.values.forEach((val, idx) => {
-            const chip = document.createElement("span");
-            chip.className = "aux-chip";
-
-            if (val === null || val === undefined) {
-                chip.classList.add("empty");
-                chip.textContent = "\u00b7";
-            } else {
-                chip.textContent = String(val);
-            }
-
-            if (
-                group.active &&
-                group.active.has(idx) &&
-                !engine.disableFlashing
-            )
-                chip.classList.add("active");
-            if (group.done && group.done.has(idx)) chip.classList.add("done");
-
-            chipsEl.appendChild(chip);
-        });
-
-        groupEl.appendChild(chipsEl);
-        innerEl.appendChild(groupEl);
-    }
-}
-
-function renderHistogram({ counts, active, done }) {
-    const maxCount = Math.max(1, ...counts);
-
-    const wrap = document.createElement("div");
-    wrap.className = "aux-histogram";
-
-    counts.forEach((count, val) => {
-        const bar = document.createElement("div");
-        bar.className = "aux-hist-bar";
-        bar.style.height = `${(count / maxCount) * 100}%`;
-
-        if (active && active.has(val) && !engine.disableFlashing)
-            bar.classList.add("active");
-        else if (done && done.has(val)) bar.classList.add("done");
-
-        wrap.appendChild(bar);
-    });
-
-    innerEl.appendChild(wrap);
 }

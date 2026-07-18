@@ -7,8 +7,11 @@ import {
     optimisedCocktailSort,
 } from "./algorithms/cocktailSort.js";
 import { combSort, combSort11 } from "./algorithms/combSort.js";
+import { councilSort } from "./algorithms/councilSort.js";
 import { countingSort, stableCountingSort } from "./algorithms/countingSort.js";
 import { cycleSort } from "./algorithms/cycleSort.js";
+import { deleteSort } from "./algorithms/deleteSort.js";
+import { extrapolateSort } from "./algorithms/extrapolateSort.js";
 import { fairShareSort } from "./algorithms/fairShareSort.js";
 import { gnomeSort } from "./algorithms/gnomeSort.js";
 import { heapSort } from "./algorithms/heapSort.js";
@@ -23,6 +26,7 @@ import { lsdRadixSort } from "./algorithms/lsdRadixSort.js";
 import { mergeSort, bottomUpMergeSort } from "./algorithms/mergeSort.js";
 import { miracleSort } from "./algorithms/miracleSort.js";
 import { msdRadixSort } from "./algorithms/msdRadixSort.js";
+import { ostrichSort } from "./algorithms/ostrichSort.js";
 import { pancakeSort } from "./algorithms/pancakeSort.js";
 import { quantumBogoSort } from "./algorithms/quantumBogoSort.js";
 import {
@@ -159,7 +163,20 @@ function shifted(n) {
     return [...base.slice(split), ...base.slice(0, split)];
 }
 
-export const SIZES = ["4", "8", "16", "32", "64", "96", "128", "256", "512"];
+export const SIZES = [
+    "4",
+    "8",
+    "12",
+    "16",
+    "24",
+    "32",
+    "48",
+    "64",
+    "96",
+    "128",
+    "256",
+    "512",
+];
 export const MAX_SIZE = Number(SIZES[SIZES.length - 1]);
 
 const DATASETS = [
@@ -660,6 +677,54 @@ const ALGOS = [
         inplace: true,
         metrics: { compares: false, swaps: false },
         desc: "Calculates the total wealth of the array, divides it equally among all elements, and redistributes the proceeds without regard for their previous values. Since every element receives an identical fair share, no element can be out of order. Preserves the total sum while destroying virtually every other property of the input.",
+    },
+    {
+        name: "Delete Sort",
+        fn: deleteSort,
+        time_worst: "O(1)",
+        time_avg: "O(1)",
+        time_best: "O(1)",
+        aux: "O(1)",
+        stable: null,
+        inplace: true,
+        metrics: { compares: false, swaps: false, writes: false },
+        desc: "Produces a sorted array by deleting the unsorted one. Since replacing the array reference is a constant-time operation, the algorithm runs in O(1) time regardless of input size. Correctness follows from the observation that the empty array contains no inversions.",
+    },
+    {
+        name: "Ostrich Sort",
+        fn: ostrichSort,
+        time_worst: "O(1)",
+        time_avg: "O(1)",
+        time_best: "O(1)",
+        aux: "O(1)",
+        stable: null,
+        inplace: true,
+        metrics: { compares: false, swaps: false, writes: false },
+        desc: "Applies the ostrich algorithm to sorting. Upon receiving an array, it immediately removes itself from the situation without inspecting the input. Since the array can no longer be observed, neither can any evidence that it was unsorted. This avoids both the cost of sorting and the possibility of observing an incorrect result.",
+    },
+    {
+        name: "Extrapolate Sort",
+        fn: extrapolateSort,
+        time_worst: "Unbounded",
+        time_avg: "Unbounded",
+        time_best: "O(1)",
+        aux: "O(1)",
+        stable: true,
+        inplace: true,
+        metrics: { compares: true, swaps: false, writes: false },
+        desc: "Uses statistical inference to avoid unnecessary computation. Samples random adjacent pairs and classifies them as either evidence of order or statistical outliers. Continues sampling until the evidence supports the hypothesis that the array is already sorted. Inversions are treated as anomalies rather than problems, allowing the algorithm to replace sorting with confidence.",
+    },
+    {
+        name: "Council Sort",
+        fn: councilSort,
+        time_worst: "Unbounded",
+        time_avg: "Unbounded",
+        time_best: "O(n)",
+        aux: "O(1)",
+        stable: false,
+        inplace: true,
+        metrics: { writes: false },
+        desc: "Partitions the array into small proposals of ten elements or less before submitting them one-by-one to a council of independent reviewers. Each member evaluates the proposal according to their own methodology before casting a vote. Proposals receiving majority approval are accepted as already sorted; rejected proposals are randomly shuffled and resubmitted until approval is achieved. The algorithm relies on the assumption that collective confidence is an adequate substitute for correctness.",
     },
 ].sort((a, b) => a.name.localeCompare(b.name));
 

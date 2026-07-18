@@ -11,8 +11,5 @@ export function* quantumBogoSort(state) {
         }
     }
 
-    state.active = new Set();
-    yield;
-
     for (let i = 0; i < n; i++) state.sorted.add(i);
 }

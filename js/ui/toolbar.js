@@ -6,8 +6,8 @@ import { DATASET_NAMES, ALGO_NAMES, SIZES } from "../core/constants.js";
 import { unlockAudioContext } from "../audio/audio.js";
 
 const SPEEDS = {
-    Glacial: 0.1,
-    Slow: 0.2,
+    Glacial: 0.2,
+    Slow: 0.4,
     Normal: 1.0,
     Fast: 5.0,
     Turbo: 15.0,

@@ -94,6 +94,19 @@ export function playTone(f, speed, muted) {
 }
 
 export function playValue(val, maxVal, speed, muted) {
+    if (typeof val === "string") {
+        switch (val) {
+            case "Yay":
+                val = maxVal;
+                break;
+            case "Nay":
+                val = 0;
+                break;
+            default:
+                return;
+        }
+    }
+
     playTone(freq(val, maxVal), speed, muted);
 }
 

@@ -4,11 +4,7 @@ export function* bozoSort(state) {
 
     while (!(yield* isSorted(state))) {
         let i = Math.floor(Math.random() * n);
-        let j;
-
-        do {
-            j = Math.floor(Math.random() * n);
-        } while (j === i);
+        let j = Math.floor(Math.random() * n);
 
         state.active = new Set([i, j]);
         yield;

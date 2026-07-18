@@ -2,34 +2,38 @@ export function* countingSort(state) {
     const arr = state.arr;
 
     const maxNum = Math.max(...arr);
-    const countArr = Array(maxNum + 1).fill(0);
+    const entries = Array.from({ length: maxNum + 1 }, (_, val) => ({
+        label: String(val),
+        count: 0,
+    }));
 
     const histActive = new Set();
     const histDone = new Set();
     state.aux = {
         kind: "histogram",
-        counts: countArr,
+        entries,
         active: histActive,
         done: histDone,
     };
 
     for (const [i, num] of arr.entries()) {
-        countArr[num]++;
+        entries[num].count++;
 
         histActive.clear();
-        histActive.add(arr[i]);
+        histActive.add(num);
         state.active = new Set([i]);
         yield;
     }
 
+    histActive.clear();
     state.active.clear();
     let pos = 0;
 
-    for (const [val, count] of countArr.entries()) {
+    for (const [val, entry] of entries.entries()) {
         histActive.clear();
         histActive.add(val);
 
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < entry.count; i++) {
             arr[pos] = val;
             state.sorted.add(pos);
 

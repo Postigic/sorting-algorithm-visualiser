@@ -57,68 +57,64 @@ export function drawBars() {
     const { arr, active, activeType, selfSwap, sorted, pivot, n } =
         engine.state;
     const len = arr.length;
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvasEl.width / dpr;
+    const h = canvasEl.height / dpr;
 
-    if (len > 0) {
-        const dpr = window.devicePixelRatio || 1;
-        const w = canvasEl.width / dpr;
-        const h = canvasEl.height / dpr;
+    ctx.clearRect(0, 0, w, h);
 
-        ctx.clearRect(0, 0, w, h);
+    const {
+        default: colDefault,
+        highlight: colHighlight,
+        sorted: colSorted,
+        pivot: colPivot,
+        compare: colCompare,
+        swap: colSwap,
+        selfSwap: colSelfSwap,
+        write: colWrite,
+    } = cachedColors;
+    const activeColor =
+        { compare: colCompare, swap: colSwap, write: colWrite }[activeType] ||
+        colHighlight;
 
-        const {
-            default: colDefault,
-            highlight: colHighlight,
-            sorted: colSorted,
-            pivot: colPivot,
-            compare: colCompare,
-            swap: colSwap,
-            selfSwap: colSelfSwap,
-            write: colWrite,
-        } = cachedColors;
-        const activeColor =
-            { compare: colCompare, swap: colSwap, write: colWrite }[
-                activeType
-            ] || colHighlight;
+    const barW = w / len;
+    const maxVal = Math.max(n, ...arr);
 
-        const barW = w / len;
-        const maxVal = Math.max(n, ...arr);
+    for (let i = 0; i < len; i++) {
+        const val = arr[i];
+        const barH = (val / maxVal) * h;
+        const x0 = i * barW;
+        const y0 = h - barH;
 
-        for (let i = 0; i < len; i++) {
-            const val = arr[i];
-            const barH = (val / maxVal) * h;
-            const x0 = i * barW;
-            const y0 = h - barH;
+        let color = colDefault;
+        if (engine.disableFlashing) {
+            if (sorted.has(i)) color = colSorted;
+        } else {
+            if (pivot.has(i)) color = colPivot;
+            else if (active.has(i)) color = activeColor;
+            else if (sorted.has(i)) color = colSorted;
+        }
 
-            let color = colDefault;
-            if (engine.disableFlashing) {
-                if (sorted.has(i)) color = colSorted;
-            } else {
-                if (pivot.has(i)) color = colPivot;
-                else if (active.has(i)) color = activeColor;
-                else if (sorted.has(i)) color = colSorted;
-            }
+        ctx.fillStyle = color;
+        ctx.fillRect(x0, y0, Math.max(1, barW - 1), barH);
 
-            ctx.fillStyle = color;
-            ctx.fillRect(x0, y0, Math.max(1, barW - 1), barH);
-
-            if (
-                !engine.disableFlashing &&
-                activeType === "swap" &&
-                selfSwap &&
-                active.has(i)
-            ) {
-                ctx.save();
-                ctx.strokeStyle = colSelfSwap;
-                ctx.lineWidth = 2;
-                ctx.setLineDash([4, 3]);
-                ctx.strokeRect(
-                    x0 + 1,
-                    y0 + 1,
-                    Math.max(1, barW - 1) - 2,
-                    Math.max(1, barH - 2),
-                );
-                ctx.restore();
-            }
+        if (
+            !engine.disableFlashing &&
+            activeType === "swap" &&
+            selfSwap &&
+            active.has(i)
+        ) {
+            ctx.save();
+            ctx.strokeStyle = colSelfSwap;
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 3]);
+            ctx.strokeRect(
+                x0 + 1,
+                y0 + 1,
+                Math.max(1, barW - 1) - 2,
+                Math.max(1, barH - 2),
+            );
+            ctx.restore();
         }
     }
 
