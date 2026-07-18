@@ -50,12 +50,26 @@
                         <input type="checkbox" id="show-aux-checkbox" checked />
                         <span>Show Aux</span>
                     </label>
+
+                    <label class="control checkbox">
+                        <input type="checkbox" id="disable-flashing-checkbox" />
+                        <span>Disable Flashing</span>
+                    </label>
                 </div>
 
                 <div class="toolbar-row">
                     <button id="shuffle-btn" title="F5">Shuffle</button>
                     <button id="step-btn" title="Right Arrow">Step</button>
                     <button id="run-btn" title="Space">Run</button>
+                </div>
+            </section>
+
+            <section id="flash-warning-banner">
+                <div id="flash-warning-banner-inner">
+                    <span class="flash-warning-text"></span>
+                    <button class="flash-warning-dismiss" type="button">
+                        Dismiss
+                    </button>
                 </div>
             </section>
 

@@ -1,6 +1,7 @@
 import { engine } from "../core/engine.js";
-import { drawBars, forceRefresh } from "./canvas.js";
+import { drawBars } from "./canvas.js";
 import { updateInfoPanel } from "./infoPanel.js";
+import { updateFlashWarning } from "./flashWarning.js";
 import { DATASET_NAMES, ALGO_NAMES, SIZES } from "../core/constants.js";
 import { unlockAudioContext } from "../audio/audio.js";
 
@@ -75,7 +76,6 @@ function onStep() {
 
     if (!alive) {
         els.runBtn.textContent = "Run";
-        forceRefresh(); // never seen this happen but just in case
     } else {
         drawBars();
     }
@@ -90,6 +90,7 @@ function onSizeChange(e) {
 
 function onSpeedChange(e) {
     engine.speed = SPEEDS[e.target.value];
+    updateFlashWarning(engine.state.n);
 }
 
 function onMute(e) {
@@ -101,6 +102,26 @@ function onShowAux(e) {
     drawBars();
 }
 
+function onDisableFlashing(e) {
+    const uncheckingWhileOsPrefersReducedMotion =
+        !e.target.checked &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (uncheckingWhileOsPrefersReducedMotion) {
+        const proceed = confirm(
+            "Your system is set to prefer reduced motion. This tool uses rapid color changes to show algorithm activity, which can be uncomfortable or trigger photosensitive reactions for some people. Re-enable flashing colors anyway?",
+        );
+
+        if (!proceed) {
+            e.target.checked = true;
+            return;
+        }
+    }
+
+    engine.disableFlashing = e.target.checked;
+    drawBars();
+}
+
 export function setupToolbar(container) {
     els = {
         algoSelect: container.querySelector("#algo-select"),
@@ -109,6 +130,9 @@ export function setupToolbar(container) {
         speedSelect: container.querySelector("#speed-select"),
         muteCheckbox: container.querySelector("#mute-checkbox"),
         showAuxCheckbox: container.querySelector("#show-aux-checkbox"),
+        disableFlashingCheckbox: container.querySelector(
+            "#disable-flashing-checkbox",
+        ),
         shuffleBtn: container.querySelector("#shuffle-btn"),
         stepBtn: container.querySelector("#step-btn"),
         runBtn: container.querySelector("#run-btn"),
@@ -120,6 +144,7 @@ export function setupToolbar(container) {
     populateSelect(els.speedSelect, Object.keys(SPEEDS), "Normal");
     els.muteCheckbox.checked = engine.muted;
     els.showAuxCheckbox.checked = engine.showAux;
+    els.disableFlashingCheckbox.checked = engine.disableFlashing;
 
     els.algoSelect.addEventListener("change", onAlgoChange);
     els.datasetSelect.addEventListener("change", onDatasetChange);
@@ -127,6 +152,7 @@ export function setupToolbar(container) {
     els.speedSelect.addEventListener("change", onSpeedChange);
     els.muteCheckbox.addEventListener("change", onMute);
     els.showAuxCheckbox.addEventListener("change", onShowAux);
+    els.disableFlashingCheckbox.addEventListener("change", onDisableFlashing);
 
     els.shuffleBtn.addEventListener("click", onShuffle);
     els.stepBtn.addEventListener("click", onStep);

@@ -156,6 +156,67 @@ input[type="checkbox"] {
     transform: translateY(0);
 }
 
+/* .badge-left {
+    left: 10px;
+    right: auto;
+} */
+
+#flash-warning-banner {
+    display: grid;
+    grid-template-rows: 0fr;
+    margin-bottom: 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: var(--panel-bg);
+    transition:
+        grid-template-rows 200ms ease,
+        border-color 200ms ease,
+        margin-bottom 200ms ease;
+}
+
+#flash-warning-banner.visible {
+    grid-template-rows: 1fr;
+    margin-bottom: 12px;
+    border-color: var(--bar-pivot);
+}
+
+#flash-warning-banner-inner {
+    overflow: hidden;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 14px;
+    transition: padding 200ms ease;
+}
+
+#flash-warning-banner.visible #flash-warning-banner-inner {
+    padding: 10px 14px;
+}
+
+.flash-warning-text {
+    color: var(--bar-pivot);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.flash-warning-dismiss {
+    background: transparent;
+    border: 1px solid var(--bar-pivot);
+    color: var(--bar-pivot);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.flash-warning-dismiss:hover {
+    background: var(--bar-pivot);
+    color: var(--bg);
+}
+
 #aux-row {
     display: grid;
     grid-template-rows: 0fr;

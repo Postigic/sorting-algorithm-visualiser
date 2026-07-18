@@ -52,6 +52,7 @@ export class Engine {
         this.speed = 1.0;
         this.muted = false;
         this.showAux = true;
+        this.disableFlashing = false;
         this.running = false;
 
         this.stats = emptyStats();
@@ -110,6 +111,11 @@ export class Engine {
 
         this._ensureGenerator();
 
+        const MAX_CATCHUP_MS = 1000;
+        if (now - this._lastStepTime > MAX_CATCHUP_MS) {
+            this._lastStepTime = now;
+        }
+
         while (now - this._lastStepTime >= stepIntervalMs) {
             this._lastStepTime += stepIntervalMs;
 
@@ -132,13 +138,15 @@ export class Engine {
     }
 
     _playActive() {
+        const maxVal = Math.max(this.state.n, ...this.state.arr);
+
         for (const i of this.state.active) {
-            playValue(this.state.arr[i], this.state.n, this.speed, this.muted);
+            playValue(this.state.arr[i], maxVal, this.speed, this.muted);
         }
 
         if (this.showAux) {
             for (const val of auxActiveValues(this.state.aux)) {
-                playValue(val, this.state.n, this.speed, this.muted);
+                playValue(val, maxVal, this.speed, this.muted);
             }
         }
     }

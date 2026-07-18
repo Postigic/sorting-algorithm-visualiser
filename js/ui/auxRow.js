@@ -99,7 +99,7 @@ function renderTree(aux) {
             yForLevel(0),
             nodeRadius,
             val,
-            active.has(size + i),
+            active.has(size + i) && !engine.disableFlashing,
             isDone,
             showLabels,
         );
@@ -114,7 +114,7 @@ function renderTree(aux) {
             yForLevel(levelOfNode(i)),
             nodeRadius,
             val,
-            active.has(i),
+            active.has(i) && !engine.disableFlashing,
             false,
             showLabels,
         );
@@ -171,7 +171,11 @@ function renderGroups(groups) {
                 chip.textContent = String(val);
             }
 
-            if (group.active && group.active.has(idx))
+            if (
+                group.active &&
+                group.active.has(idx) &&
+                !engine.disableFlashing
+            )
                 chip.classList.add("active");
             if (group.done && group.done.has(idx)) chip.classList.add("done");
 
@@ -194,7 +198,8 @@ function renderHistogram({ counts, active, done }) {
         bar.className = "aux-hist-bar";
         bar.style.height = `${(count / maxCount) * 100}%`;
 
-        if (active && active.has(val)) bar.classList.add("active");
+        if (active && active.has(val) && !engine.disableFlashing)
+            bar.classList.add("active");
         else if (done && done.has(val)) bar.classList.add("done");
 
         wrap.appendChild(bar);

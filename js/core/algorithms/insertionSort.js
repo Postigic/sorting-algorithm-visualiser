@@ -12,15 +12,16 @@ export function* insertionSort(state) {
 
             if (arr[j] <= key) break;
 
+            state.active = new Set([j + 1]);
             arr[j + 1] = arr[j];
             yield { type: "write", indices: [j + 1] };
 
             j--;
         }
 
-        state.active = new Set([j + 1, i]);
+        state.active = new Set([j + 1]);
         arr[j + 1] = key;
-        yield { type: "write", indices: [j + 1, i] };
+        yield { type: "write", indices: [j + 1] };
     }
 
     for (let i = 0; i < n; i++) {
@@ -53,16 +54,16 @@ export function* binaryInsertionSort(state) {
         let j = i;
 
         while (j > lo) {
-            state.active = new Set([j, j - 1]);
+            state.active = new Set([j]);
             arr[j] = arr[j - 1];
             yield { type: "write", indices: [j] };
 
             j--;
         }
 
-        state.active = new Set([lo, i]);
+        state.active = new Set([lo]);
         arr[lo] = key;
-        yield { type: "write", indices: [lo, i] };
+        yield { type: "write", indices: [lo] };
     }
 
     for (let i = 0; i < n; i++) {

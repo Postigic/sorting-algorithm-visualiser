@@ -93,8 +93,8 @@ export function playTone(f, speed, muted) {
     source.start();
 }
 
-export function playValue(val, n, speed, muted) {
-    playTone(freq(val, n), speed, muted);
+export function playValue(val, maxVal, speed, muted) {
+    playTone(freq(val, maxVal), speed, muted);
 }
 
 export { unlockAudioContext };

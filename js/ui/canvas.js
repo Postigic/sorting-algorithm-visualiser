@@ -1,16 +1,11 @@
 import { engine } from "../core/engine.js";
 import { renderAuxRow } from "./auxRow.js";
+import { updateFlashWarning } from "./flashWarning.js";
 
 let ctx = null;
 let canvasEl = null;
 let depthBadgeEl = null;
 let cachedColors = null;
-
-const MIN_ACTIVE_REFRESH_MS = 80;
-let lastActiveRefresh = 0;
-let cachedActive = new Set();
-let cachedActiveType = null;
-let cachedSelfSwap = false;
 
 function cssVar(name) {
     return getComputedStyle(document.documentElement)
@@ -59,18 +54,9 @@ function resizeCanvas() {
 export function drawBars() {
     if (!ctx) return;
 
-    const { arr, sorted, pivot, n } = engine.state;
+    const { arr, active, activeType, selfSwap, sorted, pivot, n } =
+        engine.state;
     const len = arr.length;
-
-    const now = performance.now();
-    const shouldRefreshActive =
-        now - lastActiveRefresh >= MIN_ACTIVE_REFRESH_MS;
-    if (shouldRefreshActive) {
-        cachedActive = new Set(engine.state.active);
-        cachedActiveType = engine.state.activeType;
-        cachedSelfSwap = engine.state.selfSwap;
-        lastActiveRefresh = now;
-    }
 
     if (len > 0) {
         const dpr = window.devicePixelRatio || 1;
@@ -91,29 +77,35 @@ export function drawBars() {
         } = cachedColors;
         const activeColor =
             { compare: colCompare, swap: colSwap, write: colWrite }[
-                cachedActiveType
+                activeType
             ] || colHighlight;
 
         const barW = w / len;
+        const maxVal = Math.max(n, ...arr);
 
         for (let i = 0; i < len; i++) {
             const val = arr[i];
-            const barH = (val / n) * h;
+            const barH = (val / maxVal) * h;
             const x0 = i * barW;
             const y0 = h - barH;
 
             let color = colDefault;
-            if (pivot.has(i)) color = colPivot;
-            else if (cachedActive.has(i)) color = activeColor;
-            else if (sorted.has(i)) color = colSorted;
+            if (engine.disableFlashing) {
+                if (sorted.has(i)) color = colSorted;
+            } else {
+                if (pivot.has(i)) color = colPivot;
+                else if (active.has(i)) color = activeColor;
+                else if (sorted.has(i)) color = colSorted;
+            }
 
             ctx.fillStyle = color;
             ctx.fillRect(x0, y0, Math.max(1, barW - 1), barH);
 
             if (
-                cachedActiveType === "swap" &&
-                cachedSelfSwap &&
-                cachedActive.has(i)
+                !engine.disableFlashing &&
+                activeType === "swap" &&
+                selfSwap &&
+                active.has(i)
             ) {
                 ctx.save();
                 ctx.strokeStyle = colSelfSwap;
@@ -131,15 +123,8 @@ export function drawBars() {
     }
 
     updateDepthBadge();
-
-    if (shouldRefreshActive) {
-        renderAuxRow();
-    }
-}
-
-export function forceRefresh() {
-    lastActiveRefresh = 0;
-    drawBars();
+    updateFlashWarning(n);
+    renderAuxRow();
 }
 
 function updateDepthBadge() {

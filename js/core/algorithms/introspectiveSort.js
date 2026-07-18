@@ -60,12 +60,14 @@ function* insertionSort(state, arr, lo, hi) {
 
             if (arr[j] <= key) break;
 
+            state.active = new Set([j + 1]);
             arr[j + 1] = arr[j];
             yield { type: "write", indices: [j + 1] };
 
             j--;
         }
 
+        state.active = new Set([j + 1]);
         arr[j + 1] = key;
         yield { type: "write", indices: [j + 1] };
     }
