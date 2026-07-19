@@ -4,6 +4,7 @@ const FLASH_WARNING_MIN_STEPS_PER_SEC = 3;
 const FLASH_WARNING_MAX_N = 16;
 
 const PROBLEMATIC_AUX_ALGS = new Set(["Extrapolate Sort"]);
+const EXCLUDED_ALGS = new Set(["Delete Sort", "Ostrich Sort"]);
 
 let bannerEl = null;
 let textEl = null;
@@ -41,12 +42,14 @@ export function updateFlashWarning(n) {
     const rapidAnimationRisk =
         n <= FLASH_WARNING_MAX_N &&
         theoreticalStepsPerSecond(engine.speed) >=
-            FLASH_WARNING_MIN_STEPS_PER_SEC;
+            FLASH_WARNING_MIN_STEPS_PER_SEC &&
+        !EXCLUDED_ALGS.has(engine.algoName);
 
     const problematicAuxRisk =
         PROBLEMATIC_AUX_ALGS.has(engine.algoName) &&
         theoreticalStepsPerSecond(engine.speed) >=
-            FLASH_WARNING_MIN_STEPS_PER_SEC;
+            FLASH_WARNING_MIN_STEPS_PER_SEC &&
+        !EXCLUDED_ALGS.has(engine.algoName);
 
     if (rapidAnimationRisk) causes.push("the bars change colour very rapidly");
 

@@ -717,7 +717,7 @@ const ALGOS = [
         stable: true,
         inplace: true,
         metrics: { compares: true, swaps: false, writes: false },
-        desc: "Uses statistical inference to avoid unnecessary computation. Samples random adjacent pairs and classifies them as either evidence of order or statistical outliers. Continues sampling until the evidence supports the hypothesis that the array is already sorted. Inversions are treated as anomalies rather than problems, allowing the algorithm to replace sorting with confidence.",
+        desc: "Uses statistical inference to avoid unnecessary computation. Samples twenty random adjacent pairs and classifies them as either evidence of order or statistical outliers. Continues sampling until the evidence supports the hypothesis that the array is already sorted. Inversions are treated as anomalies rather than problems, allowing the algorithm to replace sorting with confidence.",
     },
     {
         name: "Council Sort",

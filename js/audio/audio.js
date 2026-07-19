@@ -2,7 +2,7 @@ const AUDIO_CTX = new (window.AudioContext || window.webkitAudioContext)();
 
 const SUSTAIN = 0.12;
 const VOLUME = 0.08;
-const MAX_VOICES = 32;
+const MAX_VOICES = 16;
 
 const activeVoices = [];
 
@@ -62,7 +62,10 @@ function makeNoteBuffer(f, speed) {
     for (let i = 0; i < length; i++) {
         const t = i / sampleRate;
         const phase = (f * t) % 1.0;
-        const wave = phase < 0.5 ? 4 * phase - 1 : 3 - 4 * phase;
+        const triangle = phase < 0.5 ? 4 * phase - 1 : 3 - 4 * phase;
+        const sine = Math.sin(2 * Math.PI * f * t);
+
+        const wave = 0.95 * triangle + 0.05 * sine;
 
         data[i] = wave * env[i] * VOLUME * comp;
     }
