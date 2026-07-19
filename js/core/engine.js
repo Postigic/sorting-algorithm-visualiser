@@ -175,6 +175,8 @@ export class Engine {
         if (done) {
             this._generator = null;
             this.state.active.clear();
+            this.state.activeType = null;
+            this.state.selfSwap = false;
             return false;
         }
 
@@ -189,7 +191,6 @@ export class Engine {
 
     _pause() {
         this.running = false;
-        this.state.active.clear();
     }
 
     _reset() {

@@ -1,10 +1,15 @@
 import { bogoSort } from "./algorithms/bogoSort.js";
 import { bogobogoSort } from "./algorithms/bogobogoSort.js";
 import { bozoSort } from "./algorithms/bozoSort.js";
-import { bubbleSort, optimisedBubbleSort } from "./algorithms/bubbleSort.js";
+import {
+    bubbleSort,
+    earlyExitBubbleSort,
+    lastSwapBubbleSort,
+} from "./algorithms/bubbleSort.js";
 import {
     cocktailShakerSort,
-    optimisedCocktailShakerSort,
+    earlyExitCocktailShakerSort,
+    lastSwapCocktailShakerSort,
 } from "./algorithms/cocktailShakerSort.js";
 import { combSort, combSort11 } from "./algorithms/combSort.js";
 import { councilSort } from "./algorithms/councilSort.js";
@@ -225,8 +230,8 @@ const ALGOS = [
         desc: "Repeatedly steps through the array comparing and swapping adjacent elements. One of the simplest sorting algorithms to understand and implement, but one of the least efficient; always O(n\u00b2) comparisons with no early exit. Outperformed by insertion sort in almost every scenario, even on small arrays. Used almost exclusively for teaching purposes.",
     },
     {
-        name: "Optimised Bubble Sort",
-        fn: optimisedBubbleSort,
+        name: "Early-Exit Bubble Sort",
+        fn: earlyExitBubbleSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n)",
@@ -315,7 +320,7 @@ const ALGOS = [
         time_avg: "O(n)",
         time_best: "O(n)",
         aux: "O(1)",
-        stable: true,
+        stable: null,
         inplace: true,
         metrics: { swaps: false },
         desc: "Removes any out-of-order element rather than moving it, leaving a sorted subsequence of the original. O(n) in a single pass. Not a real sorting algorithm since it destroys data, but technically produces a sorted result. The name and premise are a dark joke about eliminating problems rather than solving them.",
@@ -465,8 +470,8 @@ const ALGOS = [
         desc: "A bidirectional variant of bubble sort that alternates between forward and backward passes. The backward pass handles turtles; small elements near the end of the array that take many passes to bubble leftward in standard bubble sort. Slightly better in practice than bubble sort but same O(n\u00b2) worst case, and still outperformed by insertion sort.",
     },
     {
-        name: "Optimised Cocktail Shaker Sort",
-        fn: optimisedCocktailShakerSort,
+        name: "Early-Exit Cocktail Shaker Sort",
+        fn: earlyExitCocktailShakerSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n)",
@@ -474,13 +479,13 @@ const ALGOS = [
         stable: true,
         inplace: true,
         metrics: { writes: false },
-        desc: "Cocktail shaker sort with the same early-exit optimisation as optimised bubble sort; terminates as soon as a full bidirectional pass produces no swaps. O(n) on sorted input. Handles nearly sorted data better than optimised bubble sort due to the bidirectional passes reducing turtle movement. Still O(n\u00b2) in the general case.",
+        desc: "Cocktail shaker sort with the same early-exit optimisation as early-exit bubble sort; terminates as soon as a full bidirectional pass produces no swaps. O(n) on sorted input. Handles nearly sorted data better than early-exit bubble sort due to the bidirectional passes reducing turtle movement. Still O(n\u00b2) in the general case.",
     },
     {
         name: "Shell Sort",
         fn: shellSort,
         time_worst: "O(n\u00b2)",
-        time_avg: "O(n log\u00b2 n)",
+        time_avg: "O(n^1.5)",
         time_best: "O(n log n)",
         aux: "O(1)",
         stable: false,
@@ -648,7 +653,7 @@ const ALGOS = [
         fn: introspectiveSort,
         time_worst: "O(n log n)",
         time_avg: "O(n log n)",
-        time_best: "O(n)",
+        time_best: "O(n log n)",
         aux: "O(log n)",
         stable: false,
         inplace: true,
@@ -725,6 +730,30 @@ const ALGOS = [
         inplace: true,
         metrics: { writes: false },
         desc: "Partitions the array into small proposals of ten elements or less before submitting them one-by-one to a council of independent reviewers. Each member evaluates the proposal according to their own methodology before casting a vote. Proposals receiving majority approval are accepted as already sorted; rejected proposals are randomly shuffled and resubmitted until approval is achieved. The algorithm relies on the assumption that collective confidence is an adequate substitute for correctness.",
+    },
+    {
+        name: "Last-Swap Bubble Sort",
+        fn: lastSwapBubbleSort,
+        time_worst: "O(n²)",
+        time_avg: "O(n²)",
+        time_best: "O(n)",
+        aux: "O(1)",
+        stable: true,
+        inplace: true,
+        metrics: { writes: false },
+        desc: "Bubble sort with early exit and a last-swap boundary optimisation. Rather than shrinking the unsorted region by one element after each pass, it records the position of the final swap and skips comparisons beyond it on subsequent passes. Reduces unnecessary work on partially sorted arrays while retaining O(n²) worst-case complexity and O(n) best case. This is about as efficient as bubble sort gets without fundamentally changing the algorithm.",
+    },
+    {
+        name: "Last-Swap Cocktail Shaker Sort",
+        fn: lastSwapCocktailShakerSort,
+        time_worst: "O(n\u00b2)",
+        time_avg: "O(n\u00b2)",
+        time_best: "O(n)",
+        aux: "O(1)",
+        stable: true,
+        inplace: true,
+        metrics: { writes: false },
+        desc: "Cocktail shaker sort with early exit and last-swap boundary optimisation in both directions. Each forward and backward pass records the final swap position, allowing the active region to shrink to exactly where disorder remains. Performs fewer comparisons than the standard early-exit variant on partially sorted data while preserving O(n²) worst-case complexity and O(n) best case.",
     },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
