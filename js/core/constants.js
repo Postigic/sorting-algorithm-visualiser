@@ -3,9 +3,9 @@ import { bogobogoSort } from "./algorithms/bogobogoSort.js";
 import { bozoSort } from "./algorithms/bozoSort.js";
 import { bubbleSort, optimisedBubbleSort } from "./algorithms/bubbleSort.js";
 import {
-    cocktailSort,
-    optimisedCocktailSort,
-} from "./algorithms/cocktailSort.js";
+    cocktailShakerSort,
+    optimisedCocktailShakerSort,
+} from "./algorithms/cocktailShakerSort.js";
 import { combSort, combSort11 } from "./algorithms/combSort.js";
 import { councilSort } from "./algorithms/councilSort.js";
 import { countingSort, stableCountingSort } from "./algorithms/countingSort.js";
@@ -453,8 +453,8 @@ const ALGOS = [
         desc: "Sorts digit by digit from most to least significant, recursing into each bucket. Single-element buckets are skipped. Can be faster than LSD for variable-length keys since it can short-circuit on buckets that are already uniform. More complex to implement correctly than LSD. Same asymptotic complexity but different practical characteristics.",
     },
     {
-        name: "Cocktail Sort",
-        fn: cocktailSort,
+        name: "Cocktail Shaker Sort",
+        fn: cocktailShakerSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n\u00b2)",
@@ -465,8 +465,8 @@ const ALGOS = [
         desc: "A bidirectional variant of bubble sort that alternates between forward and backward passes. The backward pass handles turtles; small elements near the end of the array that take many passes to bubble leftward in standard bubble sort. Slightly better in practice than bubble sort but same O(n\u00b2) worst case, and still outperformed by insertion sort.",
     },
     {
-        name: "Optimised Cocktail Sort",
-        fn: optimisedCocktailSort,
+        name: "Optimised Cocktail Shaker Sort",
+        fn: optimisedCocktailShakerSort,
         time_worst: "O(n\u00b2)",
         time_avg: "O(n\u00b2)",
         time_best: "O(n)",
@@ -474,7 +474,7 @@ const ALGOS = [
         stable: true,
         inplace: true,
         metrics: { writes: false },
-        desc: "Cocktail sort with the same early-exit optimisation as optimised bubble sort; terminates as soon as a full bidirectional pass produces no swaps. O(n) on sorted input. Handles nearly sorted data better than optimised bubble sort due to the bidirectional passes reducing turtle movement. Still O(n\u00b2) in the general case.",
+        desc: "Cocktail shaker sort with the same early-exit optimisation as optimised bubble sort; terminates as soon as a full bidirectional pass produces no swaps. O(n) on sorted input. Handles nearly sorted data better than optimised bubble sort due to the bidirectional passes reducing turtle movement. Still O(n\u00b2) in the general case.",
     },
     {
         name: "Shell Sort",

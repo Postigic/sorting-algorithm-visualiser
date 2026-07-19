@@ -1,4 +1,4 @@
-export function* cocktailSort(state) {
+export function* cocktailShakerSort(state) {
     const arr = state.arr;
     const n = arr.length;
 
@@ -33,7 +33,7 @@ export function* cocktailSort(state) {
     }
 }
 
-export function* optimisedCocktailSort(state) {
+export function* optimisedCocktailShakerSort(state) {
     const arr = state.arr;
     const n = arr.length;
 
