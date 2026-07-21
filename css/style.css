@@ -121,7 +121,7 @@ input[type="checkbox"] {
 
 #canvas-wrap {
     position: relative;
-    height: 600px;
+    height: clamp(320px, 45vh, 600px);
     border: 1px solid var(--border);
     border-radius: 4px;
     overflow: hidden;
@@ -478,9 +478,5 @@ input[type="checkbox"] {
 
     .stat-row {
         grid-template-columns: repeat(2, max-content);
-    }
-
-    #canvas-wrap {
-        height: 320px;
     }
 }
