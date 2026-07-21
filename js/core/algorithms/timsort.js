@@ -108,6 +108,7 @@ function* insertionRun(state, arr, lo, hi) {
             j--;
         }
 
+        state.active = new Set([j + 1]);
         arr[j + 1] = key;
         yield { type: "write", indices: [j + 1] };
     }
@@ -189,7 +190,7 @@ function* merge(state, arr, left, mid, right) {
         leftGroup.active = new Set([i]);
         rightGroup.active = new Set([j]);
         state.active = new Set([k]);
-        yield { type: "compare", indices: [i, l.length + j] };
+        yield { type: "compare", indices: [k] };
 
         const usedLeft = l[i] <= r[j];
         if (usedLeft) {

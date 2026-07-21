@@ -33,6 +33,7 @@ import { miracleSort } from "./algorithms/miracleSort.js";
 import { msdRadixSort } from "./algorithms/msdRadixSort.js";
 import { ostrichSort } from "./algorithms/ostrichSort.js";
 import { pancakeSort } from "./algorithms/pancakeSort.js";
+import { piecewiseSort } from "./algorithms/piecewiseSort.js";
 import { quantumBogoSort } from "./algorithms/quantumBogoSort.js";
 import {
     quickSort,
@@ -657,7 +658,7 @@ const ALGOS = [
         aux: "O(log n)",
         stable: false,
         inplace: true,
-        desc: "A hybrid of quicksort, heapsort, and insertion sort. Starts with quicksort for its practical speed, but tracks recursion depth: if it exceeds 2 * floor(log2(n)), indicating bad pivot choices, it switches to heapsort to guarantee O(n log n) worst case. Small subarrays of 16 or fewer elements fall through to insertion sort, which has low overhead at small sizes. The result is quicksort\u2019s average-case performance with heapsort\u2019s worst-case guarantee. Used in most production sort implementations including C++ std::sort.",
+        desc: "A hybrid of quicksort, heapsort, and insertion sort. Starts with quicksort for its practical speed, but tracks recursion depth: if it exceeds 2 * floor(log(n)), indicating bad pivot choices, it switches to heapsort to guarantee O(n log n) worst case. Small subarrays of 16 or fewer elements fall through to insertion sort, which has low overhead at small sizes. The result is quicksort\u2019s average-case performance with heapsort\u2019s worst-case guarantee. Used in most production sort implementations including C++ std::sort.",
     },
     {
         name: "Hitchhiker's Sort",
@@ -754,6 +755,18 @@ const ALGOS = [
         inplace: true,
         metrics: { writes: false },
         desc: "Cocktail shaker sort with early exit and last-swap boundary optimisation in both directions. Each forward and backward pass records the final swap position, allowing the active region to shrink to exactly where disorder remains. Performs fewer comparisons than the standard early-exit variant on partially sorted data while preserving O(n²) worst-case complexity and O(n) best case.",
+    },
+    {
+        name: "Piecewise Sort",
+        fn: piecewiseSort,
+        time_worst: "O(n)",
+        time_avg: "O(n)",
+        time_best: "O(n)",
+        aux: "O(1)",
+        stable: true,
+        inplace: true,
+        metrics: { writes: false },
+        desc: "Partitions the array into subsets of five elements or less and sorts each independently using bubble sort. Since every subset eventually becomes perfectly ordered, the algorithm concludes that the array as a whole has also been sorted. The algorithm relies on the assumption that local correctness composes into global correctness.",
     },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
