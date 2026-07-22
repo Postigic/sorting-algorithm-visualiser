@@ -1,4 +1,4 @@
-export function* slowSort(state) {
+export function* slowsort(state) {
     const arr = state.arr;
     const n = arr.length;
 
