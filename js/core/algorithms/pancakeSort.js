@@ -13,9 +13,6 @@ export function* pancakeSort(state) {
         }
 
         if (maxIdx !== size - 1) {
-            state.active = new Set([maxIdx, size - 1]);
-            yield;
-
             if (maxIdx !== 0) {
                 state.active = new Set([0, maxIdx]);
                 yield;
@@ -35,6 +32,7 @@ export function* pancakeSort(state) {
 function* flip(state, arr, end) {
     let lo = 0;
     let hi = end;
+
     while (lo < hi) {
         [arr[lo], arr[hi]] = [arr[hi], arr[lo]];
 
