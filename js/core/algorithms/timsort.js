@@ -98,9 +98,26 @@ function* insertionRun(state, arr, lo, hi) {
         const key = arr[i];
         let j = i - 1;
 
-        while (j >= lo && arr[j] > key) {
-            state.active = new Set([j, j + 1]);
-            yield { type: "compare", indices: [j, j + 1] };
+        const auxGroup = {
+            name: null,
+            values: [key],
+            active: new Set(),
+            done: new Set(),
+        };
+        state.aux = { kind: "groups", groups: [auxGroup] };
+
+        state.active = new Set([i]);
+        yield;
+
+        while (j >= lo) {
+            state.active = new Set([j]);
+            auxGroup.active = new Set([0]);
+            yield { type: "compare", indices: [j] };
+
+            if (arr[j] <= key) break;
+
+            state.active = new Set([j + 1]);
+            auxGroup.active = new Set();
 
             arr[j + 1] = arr[j];
             yield { type: "write", indices: [j + 1] };
@@ -109,9 +126,12 @@ function* insertionRun(state, arr, lo, hi) {
         }
 
         state.active = new Set([j + 1]);
+        auxGroup.done = new Set([0]);
         arr[j + 1] = key;
         yield { type: "write", indices: [j + 1] };
     }
+
+    state.aux = null;
 }
 
 function* mergeCollapse(state, arr, runs) {
