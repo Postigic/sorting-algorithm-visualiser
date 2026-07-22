@@ -64,7 +64,7 @@ function* merge(state, arr, left, mid, right) {
         leftGroup.active = new Set([i]);
         rightGroup.active = new Set([j]);
         state.active = new Set([k]);
-        yield { type: "compare", indices: [i, l.length + j] };
+        yield;
 
         const usedLeft = l[i] <= r[j];
         if (usedLeft) {
