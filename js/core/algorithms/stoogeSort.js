@@ -11,10 +11,10 @@ export function* stoogeSort(state) {
 function* stooge(state, arr, lo, hi, depth) {
     state.depth = depth;
 
-    if (arr[lo] > arr[hi]) {
-        state.active = new Set([lo, hi]);
-        yield { type: "compare", indices: [lo, hi] };
+    state.active = new Set([lo, hi]);
+    yield { type: "compare", indices: [lo, hi] };
 
+    if (arr[lo] > arr[hi]) {
         [arr[lo], arr[hi]] = [arr[hi], arr[lo]];
         yield { type: "swap", indices: [lo, hi] };
     }
