@@ -31,6 +31,16 @@ body {
     color: var(--text);
 }
 
+::-webkit-scrollbar {
+    background: var(--accent-hover);
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-active);
+    border-radius: 5px;
+}
+
 #app {
     width: 100%;
     max-width: 1500px;
