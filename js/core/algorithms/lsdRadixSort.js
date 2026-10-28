@@ -40,6 +40,7 @@ function* countingPass(state, arr, exp, isLast) {
         const pos = count[digit] - 1;
         const val = arr[i];
 
+        state.active = new Set([i]);
         outputGroup.active = new Set([pos]);
         yield;
 
