@@ -44,6 +44,7 @@ function* countingPass(state, arr, exp, isLast) {
         outputGroup.active = new Set([pos]);
         yield;
 
+        state.active = new Set();
         output[pos] = val;
         count[digit]--;
 
